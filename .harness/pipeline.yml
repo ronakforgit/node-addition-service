@@ -1,0 +1,57 @@
+pipeline:
+  name: Build NodeJS
+  identifier: Build_NodeJS_1672915696012
+  projectIdentifier: NgLabs
+  orgIdentifier: default
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.gitforronak
+        repoName: ronakforgit/node-addition-service
+        build: <+input>
+  stages:
+    - stage:
+        name: Build Node App
+        identifier: Build_Node_App
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: node-addition-service
+                  identifier: Build_Node_App
+                  spec:
+                    shell: Sh
+                    command: yarn install && yarn test
+    - stage:
+        name: docket publish
+        identifier: docket_publish
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: build and publish
+                  identifier: build_and_publish
+                  spec:
+                    connectorRef: ronakpatildocker
+                    repo: ronakpatildocker/public
+                    tags:
+                      - circleci
