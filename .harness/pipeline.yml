@@ -30,7 +30,7 @@ pipeline:
                   identifier: Build_Node_App
                   spec:
                     shell: Sh
-                    command: yarn install && yarn test
+                    command: npm install && yarn test
     - stage:
         name: docket publish
         identifier: docket_publish
